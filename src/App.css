@@ -48,7 +48,9 @@
   
 }
 
-
+.overflow-hidden {
+   overflow: hidden;
+}
   
 
 

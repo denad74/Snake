@@ -20,21 +20,29 @@ function App() {
   
   function onKeyDown (e){
     //e = e || window.event;
+    let direction = snakeDirection
     switch (e.keyCode) {
       case 37:
-        setSnakeDirection('left');
+        direction = (direction === 'right') ? 'right' : 'left';
+        //setSnakeDirection('left');
         break;
       case 38:
-        setSnakeDirection('up');
+        direction = (direction === 'down') ? 'down' : 'up';
+        // setSnakeDirection('up');
         break;
       case 39:
-        setSnakeDirection('right');
+        direction = (direction === 'left') ? 'left' : 'right';
+        // setSnakeDirection('right');
         break;
       case 40:
-        setSnakeDirection('down');
+        direction = (direction === 'up') ? 'up' : 'down';
+        // setSnakeDirection('down');
         break;
     }
+    setSnakeDirection(direction)
   }
+
+  console.log(snakeDirection);
 
   function moveSnake() {
     let box = [...snakePosition];
@@ -71,13 +79,13 @@ function App() {
   return () => {
     clearInterval(move);
       }}
-  });
+  },);
   
   useEffect(() => {
     checkIftouchBorders();
     checkIfTouchSelf();
     checkIfSnakeEatFood()
-  }, [snakePosition])
+  }, [snakePosition, speed])
   
   function checkIfSnakeEatFood() {
     let head = snakePosition[snakePosition.length - 1];
@@ -85,7 +93,8 @@ function App() {
     if (head[0] === food[0] && head[1] === food[1]) {
       setFoodPosition(getRandomPosition())
       snakeEnlarge();
-      increaseSpeed()
+      setSpeed(speed - 50)
+      // increaseSpeed()
       setScore(score + 100)
     }
   };
@@ -96,11 +105,10 @@ function App() {
     setSnakePosition([...newSnake])
   }
 
-  function increaseSpeed() {
+  // function increaseSpeed() {
+  //     setSpeed(speed + 200)
     
-      setSpeed(speed + 10)
-    
-  }
+  // }
   
   function checkIftouchBorders() {
     let head = snakePosition[snakePosition.length - 1];
@@ -130,7 +138,7 @@ function App() {
     
   }
  
-  const startGame =()=> {
+  const startGame = () => {
     setIsPlaying(true)
     setScore(0)
   }
@@ -138,12 +146,10 @@ function App() {
 // console.log(score);
 // console.log(speed);
   return (
-    <div className="container">
+    <div className="container overflow-hidden">
        <img style={{width: "50px", margin: "5px auto", display: "block"}}  src={snake} alt="Snake Gif"/>
        
     <div className="snake-container">
-     
-      
       <Snake snakePosition={snakePosition} />
       <Food foodPosition={foodPosition}/>
     </div>
